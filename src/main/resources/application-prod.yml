@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    show-sql: false
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD}
+
+logging:
+  level:
+    com.preparex: INFO
+    org.springframework.security: WARN

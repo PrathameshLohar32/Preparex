@@ -1,0 +1,93 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.6'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.preparex'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	mapstructVersion = '1.6.3'
+	jjwtVersion = '0.12.6'
+}
+
+dependencies {
+	// Core Web
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation 'org.springframework.boot:spring-boot-starter-restclient'
+
+	// Data & Persistence
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'org.postgresql:postgresql'
+
+	// Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// Security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// Validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// Mail (for OTP notifications)
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	// JWT (jjwt 0.12.x)
+	implementation "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+	runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+	runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
+
+	// Argon2 Password Hashing (uses Spring Security's built-in Argon2)
+	implementation 'de.mkammerer:argon2-jvm:2.11'
+
+	// Google API Client (for Google ID Token verification)
+	implementation 'com.google.api-client:google-api-client:2.7.0'
+
+	// MapStruct
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+
+	// Lombok
+	compileOnly 'org.projectlombok:lombok'
+
+	// SpringDoc OpenAPI / Swagger UI
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8'
+
+	// Flyway
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.flywaydb:flyway-database-postgresql'
+
+	// Dev Tools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	// Annotation Processors: Lombok MUST come before MapStruct
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+
+	// Testing
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+compileJava.options.compilerArgs += [
+		'-Amapstruct.defaultComponentModel=spring'
+]
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

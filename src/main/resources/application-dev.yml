@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/preparex
+    username: postgres
+    password: Prat@2002
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+
+app:
+  auth:
+    jwt:
+      secret: dev-secret-key-must-be-at-least-256-bits-long-for-hs256-algorithm
+      access-token-expiry-minutes: 15
+      refresh-token-expiry-days: 7
+    session:
+      max-active-sessions: 2
+    otp:
+      expiry-minutes: 5
+      max-retries: 5
+      resend-cooldown-seconds: 60
+    registration:
+      temp-data-ttl-minutes: 10
+    google:
+      client-id: your-google-client-id-here
+
+spring.mail:
+  host: smtp.gmail.com
+  port: 587
+  username: dev@preparex.com
+  password: dev-mail-password
+
+logging:
+  level:
+    com.preparex: DEBUG
+    org.springframework.security: DEBUG
