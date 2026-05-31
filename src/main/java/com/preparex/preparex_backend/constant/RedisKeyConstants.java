@@ -50,4 +50,16 @@ public final class RedisKeyConstants {
     public static String rateLimitKey(String action, String identifier) {
         return RATE_LIMIT_PREFIX + action + ":" + identifier;
     }
+
+    // ── Phase 1: Problem Cache ──────────────────────────────────────────
+
+    /** Cached problem detail. Key: problem:{problemId} */
+    public static final String PROBLEM_CACHE_PREFIX = "problem:";
+
+    /** TTL for cached problem detail in hours */
+    public static final long PROBLEM_CACHE_TTL_HOURS = 1;
+
+    public static String problemCacheKey(String problemId) {
+        return PROBLEM_CACHE_PREFIX + problemId;
+    }
 }

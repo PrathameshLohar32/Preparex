@@ -19,4 +19,7 @@ public final class SecurityConstants {
 
     /** Default role assigned to all users */
     public static final String ROLE_USER = "ROLE_USER";
+
+    /** Admin role for content management endpoints */
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 }

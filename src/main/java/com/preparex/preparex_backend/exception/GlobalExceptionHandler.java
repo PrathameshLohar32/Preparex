@@ -127,6 +127,22 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure("Access denied"));
     }
 
+    @ExceptionHandler(PremiumRequiredException.class)
+    public ResponseEntity<ApiResponse<Void>> handlePremiumRequired(PremiumRequiredException ex) {
+        log.warn("Premium access denied: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
+    @ExceptionHandler({ProblemNotFoundException.class, ProblemSetNotFoundException.class})
+    public ResponseEntity<ApiResponse<Void>> handleResourceNotFound(BaseException ex) {
+        log.warn("Resource not found: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception ex) {
         log.error("Unexpected error occurred", ex);
