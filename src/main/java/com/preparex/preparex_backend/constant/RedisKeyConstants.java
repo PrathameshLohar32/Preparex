@@ -62,4 +62,19 @@ public final class RedisKeyConstants {
     public static String problemCacheKey(String problemId) {
         return PROBLEM_CACHE_PREFIX + problemId;
     }
+
+    // ── Phase 2: Daily Challenge & Streak ───────────────────────────────
+
+    /** Cached today's daily problems. Key: daily:today */
+    public static final String DAILY_TODAY_KEY = "daily:today";
+
+    /** Cached user streak. Key: streak:{userId} */
+    public static final String STREAK_CACHE_PREFIX = "streak:";
+
+    /** TTL for cached streak data in minutes */
+    public static final long STREAK_CACHE_TTL_MINUTES = 30;
+
+    public static String streakCacheKey(String userId) {
+        return STREAK_CACHE_PREFIX + userId;
+    }
 }
