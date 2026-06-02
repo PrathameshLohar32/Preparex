@@ -77,4 +77,19 @@ public final class RedisKeyConstants {
     public static String streakCacheKey(String userId) {
         return STREAK_CACHE_PREFIX + userId;
     }
+
+    // ── Phase 3: Contest Engine ─────────────────────────────────────────
+
+    /** Redis ZSet for contest leaderboard. Key: contest:leaderboard:{contestId} */
+    public static final String CONTEST_LEADERBOARD_PREFIX = "contest:leaderboard:";
+
+    /** Distributed lock for contest state transitions. Key: contest:state:{contestId} */
+    public static final String CONTEST_STATE_LOCK_PREFIX = "contest:state:";
+
+    /** Distributed lock for contest registration. Key: contest:register:{contestId}:{userId} */
+    public static final String CONTEST_REGISTER_LOCK_PREFIX = "contest:register:";
+
+    public static String contestLeaderboardKey(String contestId) {
+        return CONTEST_LEADERBOARD_PREFIX + contestId;
+    }
 }

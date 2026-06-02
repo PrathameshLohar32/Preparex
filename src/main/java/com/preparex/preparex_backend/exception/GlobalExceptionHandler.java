@@ -143,6 +143,22 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(ex.getMessage()));
     }
 
+    @ExceptionHandler(ContestException.class)
+    public ResponseEntity<ApiResponse<Void>> handleContestError(ContestException ex) {
+        log.warn("Contest error: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
+    @ExceptionHandler(ContestSubmissionException.class)
+    public ResponseEntity<ApiResponse<Void>> handleContestSubmissionError(ContestSubmissionException ex) {
+        log.warn("Contest submission error: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception ex) {
         log.error("Unexpected error occurred", ex);

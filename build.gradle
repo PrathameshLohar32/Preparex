@@ -34,6 +34,15 @@ dependencies {
 	// Redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+	// Kafka (Phase 3 — contest async scoring pipeline)
+	implementation 'org.springframework.kafka:spring-kafka'
+
+	// WebSocket (Phase 3 — live leaderboard broadcast)
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	// Redisson (Phase 3 — distributed locks for contest state transitions)
+	implementation 'org.redisson:redisson-spring-boot-starter:3.40.2'
+
 	// Security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
