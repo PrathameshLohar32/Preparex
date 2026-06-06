@@ -159,6 +159,38 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(ex.getMessage()));
     }
 
+    @ExceptionHandler(SprintAlreadyActiveException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSprintAlreadyActive(SprintAlreadyActiveException ex) {
+        log.warn("Sprint already active: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
+    @ExceptionHandler(SprintSessionExpiredException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSprintSessionExpired(SprintSessionExpiredException ex) {
+        log.warn("Sprint session expired: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.GONE)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
+    @ExceptionHandler(SprintNoSkipsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSprintNoSkips(SprintNoSkipsException ex) {
+        log.warn("Sprint no skips remaining: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
+    @ExceptionHandler(SprintSessionNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSprintSessionNotFound(SprintSessionNotFoundException ex) {
+        log.warn("Sprint session not found: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGenericException(Exception ex) {
         log.error("Unexpected error occurred", ex);
@@ -167,3 +199,4 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure("An unexpected error occurred. Please try again later"));
     }
 }
+

@@ -92,4 +92,35 @@ public final class RedisKeyConstants {
     public static String contestLeaderboardKey(String contestId) {
         return CONTEST_LEADERBOARD_PREFIX + contestId;
     }
+
+    // ── Phase 4: Sprint Mode ────────────────────────────────────────────
+
+    /** Sprint session state. Key: sprint:session:{sessionId} */
+    public static final String SPRINT_SESSION_PREFIX = "sprint:session:";
+
+    /** Lock to prevent duplicate sprint sessions per user. Key: sprint:user:{userId} */
+    public static final String SPRINT_USER_LOCK_PREFIX = "sprint:user:";
+
+    /** Weekly sprint leaderboard ZSet. Key: sprint:leaderboard:weekly:{YYYY-WW} */
+    public static final String SPRINT_LEADERBOARD_WEEKLY_PREFIX = "sprint:leaderboard:weekly:";
+
+    /** Monthly sprint leaderboard ZSet. Key: sprint:leaderboard:monthly:{YYYY-MM} */
+    public static final String SPRINT_LEADERBOARD_MONTHLY_PREFIX = "sprint:leaderboard:monthly:";
+
+    public static String sprintSessionKey(String sessionId) {
+        return SPRINT_SESSION_PREFIX + sessionId;
+    }
+
+    public static String sprintUserLockKey(String userId) {
+        return SPRINT_USER_LOCK_PREFIX + userId;
+    }
+
+    public static String sprintWeeklyLeaderboardKey(String weekKey) {
+        return SPRINT_LEADERBOARD_WEEKLY_PREFIX + weekKey;
+    }
+
+    public static String sprintMonthlyLeaderboardKey(String monthKey) {
+        return SPRINT_LEADERBOARD_MONTHLY_PREFIX + monthKey;
+    }
 }
+
