@@ -122,5 +122,62 @@ public final class RedisKeyConstants {
     public static String sprintMonthlyLeaderboardKey(String monthKey) {
         return SPRINT_LEADERBOARD_MONTHLY_PREFIX + monthKey;
     }
-}
 
+    // ── Phase 5: User Profile & Analytics ───────────────────────────────
+
+    /** Full profile cache. Key: profile:full:{userId}  TTL 15min */
+    public static final String PROFILE_FULL_PREFIX = "profile:full:";
+    public static final long PROFILE_FULL_TTL_MINUTES = 15;
+
+    /** Heatmap cache. Key: profile:heatmap:{userId}  TTL 1hr */
+    public static final String PROFILE_HEATMAP_PREFIX = "profile:heatmap:";
+    public static final long PROFILE_HEATMAP_MINUTES = 60;
+
+    /** Contest history cache. Key: profile:contest:{userId}  TTL 30min */
+    public static final String PROFILE_CONTEST_PREFIX = "profile:contest:";
+    public static final long PROFILE_CONTEST_TTL_MINUTES = 30;
+
+    /** Badges cache. Key: profile:badges:{userId}  TTL 30min */
+    public static final String PROFILE_BADGES_PREFIX = "profile:badges:";
+    public static final long PROFILE_BADGES_TTL_MINUTES = 30;
+
+    /** Solved stats cache. Key: profile:stats:{userId}  TTL 1hr */
+    public static final String PROFILE_STATS_PREFIX = "profile:stats:";
+    public static final long PROFILE_STATS_TTL_MINUTES = 60;
+
+    /** Subject stats cache. Key: profile:subject:{userId}  TTL 1hr */
+    public static final String PROFILE_SUBJECT_PREFIX = "profile:subject:";
+    public static final long PROFILE_SUBJECT_TTL_MINUTES = 60;
+
+    /** Sprint stats cache. Key: profile:sprint:{userId}  TTL 30min */
+    public static final String PROFILE_SPRINT_PREFIX = "profile:sprint:";
+    public static final long PROFILE_SPRINT_TTL_MINUTES = 30;
+
+    public static String profileFullKey(String userId) {
+        return PROFILE_FULL_PREFIX + userId;
+    }
+
+    public static String profileHeatmapKey(String userId) {
+        return PROFILE_HEATMAP_PREFIX + userId;
+    }
+
+    public static String profileContestKey(String userId) {
+        return PROFILE_CONTEST_PREFIX + userId;
+    }
+
+    public static String profileBadgesKey(String userId) {
+        return PROFILE_BADGES_PREFIX + userId;
+    }
+
+    public static String profileStatsKey(String userId) {
+        return PROFILE_STATS_PREFIX + userId;
+    }
+
+    public static String profileSubjectKey(String userId) {
+        return PROFILE_SUBJECT_PREFIX + userId;
+    }
+
+    public static String profileSprintKey(String userId) {
+        return PROFILE_SPRINT_PREFIX + userId;
+    }
+}
