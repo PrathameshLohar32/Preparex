@@ -57,8 +57,8 @@ dependencies {
 	runtimeOnly "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
 	runtimeOnly "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
 
-	// Argon2 Password Hashing (uses Spring Security's built-in Argon2)
-	implementation 'de.mkammerer:argon2-jvm:2.11'
+	// BouncyCastle (required by Spring Security's Argon2PasswordEncoder)
+	implementation 'org.bouncycastle:bcprov-jdk18on:1.80'
 
 	// Google API Client (for Google ID Token verification)
 	implementation 'com.google.api-client:google-api-client:2.7.0'

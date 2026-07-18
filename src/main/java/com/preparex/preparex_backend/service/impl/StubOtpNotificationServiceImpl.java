@@ -22,7 +22,8 @@ public class StubOtpNotificationServiceImpl implements OtpNotificationService {
         // In dev: log identifier but never the OTP itself
         log.info("[STUB] OTP notification triggered for identifier={}. " +
                 "Integrate a real SMS/email provider for production.", maskIdentifier(identifier));
-
+        //todo : remove this in production
+        log.info("[STUB] OTP value (for dev only): {}", rawOtp);
         // TODO: Replace with actual provider call:
         // if (isPhone(identifier)) { smsProvider.send(identifier, rawOtp); }
         // else { emailProvider.sendOtpEmail(identifier, rawOtp); }

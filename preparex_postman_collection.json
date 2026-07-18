@@ -1,0 +1,1850 @@
+{
+	"info": {
+		"name": "PreparEx API",
+		"description": "Collection of all APIs for PreparEx (Auth, Profiles, Problems, Contests, Submissions, Daily Challenges, Sprint Mode)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication & Registration",
+			"item": [
+				{
+					"name": "Initiate Registration (OTP)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\",\n  \"username\": \"testuser\",\n  \"fullName\": \"Test User\",\n  \"phone\": \"+1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/register/initiate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register",
+								"initiate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Registration OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailOrPhone\": \"user@example.com\",\n  \"otp\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/register/verify",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Google SSO Registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idToken\": \"google-id-token-here\",\n  \"username\": \"chosen_username\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/register/google/complete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register",
+								"google",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.data && jsonData.data.accessToken) {",
+									"    pm.environment.set(\"accessToken\", jsonData.data.accessToken);",
+									"    pm.environment.set(\"refreshToken\", jsonData.data.refreshToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"authType\": \"PASSWORD\",\n  \"usernameOrEmailOrPhone\": \"testuser\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send OTP (Login)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/otp/send",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"otp",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resend OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/otp/resend",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"otp",
+								"resend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData && jsonData.data && jsonData.data.accessToken) {",
+									"    pm.environment.set(\"accessToken\", jsonData.data.accessToken);",
+									"    pm.environment.set(\"refreshToken\", jsonData.data.refreshToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/refresh",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout Current Session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"sessionId\": \"\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout All Sessions",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/logout-all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Active Sessions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/sessions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sessions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Revoke Session by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/auth/sessions/:sessionId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sessions",
+								":sessionId"
+							],
+							"variable": [
+								{
+									"key": "sessionId",
+									"value": "session-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Profile & Analytics",
+			"item": [
+				{
+					"name": "Get My Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/profile/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bio\": \"Competitive programmer & JEE Aspirant\",\n  \"location\": \"Mumbai, India\",\n  \"website\": \"https://example.com\",\n  \"twitter\": \"https://twitter.com/testuser\",\n  \"github\": \"https://github.com/testuser\",\n  \"linkedin\": \"https://linkedin.com/in/testuser\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/profile/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Heatmap (365 days)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/profile/me/heatmap",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"me",
+								"heatmap"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contest History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/profile/me/contest-history?page=0&size=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"me",
+								"contest-history"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contest Score Progression Graph",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/profile/me/contest-graph",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"me",
+								"contest-graph"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Subject Accuracy Graph",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/profile/me/subject-graph",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"me",
+								"subject-graph"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Badges (Earned & Locked)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/profile/me/badges",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								"me",
+								"badges"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Public Profile of Any User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/profile/:userId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"profile",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "user-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Problems & Reference Data",
+			"item": [
+				{
+					"name": "List Problems (With Filters)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/problems?subjectId=1&difficulty=MEDIUM&page=0&size=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"problems"
+							],
+							"query": [
+								{
+									"key": "subjectId",
+									"value": "1"
+								},
+								{
+									"key": "difficulty",
+									"value": "MEDIUM"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Problem Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/problems/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"problems",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "problem-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Problem Hints",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/problems/:id/hints",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"problems",
+								":id",
+								"hints"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "problem-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Problem Solution",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/problems/:id/solution",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"problems",
+								":id",
+								"solution"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "problem-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Passage with Children",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/problems/passage/:parentId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"problems",
+								"passage",
+								":parentId"
+							],
+							"variable": [
+								{
+									"key": "parentId",
+									"value": "passage-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Subjects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/subjects?examId=JEE_MAIN",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subjects"
+							],
+							"query": [
+								{
+									"key": "examId",
+									"value": "JEE_MAIN"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Topics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/topics?subjectId=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"topics"
+							],
+							"query": [
+								{
+									"key": "subjectId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Submissions",
+			"item": [
+				{
+					"name": "Submit Practice/Challenge Answer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"problemId\": \"problem-uuid-here\",\n  \"userAnswer\": \"A\",\n  \"timeTakenSeconds\": 45\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/submissions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"submissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Submission History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/submissions/history?status=CORRECT&source=PRACTICE&page=0&size=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"submissions",
+								"history"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "CORRECT"
+								},
+								{
+									"key": "source",
+									"value": "PRACTICE"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Submission Stats (Counts)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/submissions/stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"submissions",
+								"stats"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Daily Challenge",
+			"item": [
+				{
+					"name": "Get Today's Daily Challenges",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/daily/today",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"daily",
+								"today"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Complete Daily Challenge",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userAnswer\": \"B\",\n  \"timeTakenSeconds\": 60\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/daily/:dailyProblemId/complete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"daily",
+								":dailyProblemId",
+								"complete"
+							],
+							"variable": [
+								{
+									"key": "dailyProblemId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get 90-day Challenge Calendar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/daily/calendar",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"daily",
+								"calendar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Streak Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/daily/streak",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"daily",
+								"streak"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Problem Sets",
+			"item": [
+				{
+					"name": "List All Problem Sets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/problem-sets",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"problem-sets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Problem Set Detail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/problem-sets/:slug",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"problem-sets",
+								":slug"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": "physics-mechanics-challenge"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Problem Set Progress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/problem-sets/:slug/progress",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"problem-sets",
+								":slug",
+								"progress"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": "physics-mechanics-challenge"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sprint Mode (Blitz)",
+			"item": [
+				{
+					"name": "Start Sprint Session",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"subjectId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/sprint/start",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sprint",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Answer Sprint Question",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"problemId\": \"problem-uuid-here\",\n  \"userAnswer\": \"C\",\n  \"timeTakenSeconds\": 12\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/sprint/:sessionId/answer",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sprint",
+								":sessionId",
+								"answer"
+							],
+							"variable": [
+								{
+									"key": "sessionId",
+									"value": "session-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Skip Sprint Question",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/sprint/:sessionId/skip",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sprint",
+								":sessionId",
+								"skip"
+							],
+							"variable": [
+								{
+									"key": "sessionId",
+									"value": "session-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "End Sprint Session",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/sprint/:sessionId/end",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sprint",
+								":sessionId",
+								"end"
+							],
+							"variable": [
+								{
+									"key": "sessionId",
+									"value": "session-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Sprint Session Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/sprint/:sessionId/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sprint",
+								":sessionId",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "sessionId",
+									"value": "session-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Weekly Sprint Leaderboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/sprint/leaderboard/weekly?limit=50",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sprint",
+								"leaderboard",
+								"weekly"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Monthly Sprint Leaderboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/sprint/leaderboard/monthly?limit=50",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"sprint",
+								"leaderboard",
+								"monthly"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "50"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contests (Student)",
+			"item": [
+				{
+					"name": "List Contests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/contests?status=LIVE&page=0&size=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contests"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "LIVE"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "20"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contest Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/contests/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contests",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register for Contest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/contests/:id/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contests",
+								":id",
+								"register"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contest Questions (Live Only)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/contests/:id/questions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contests",
+								":id",
+								"questions"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Contest Answer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"problemId\": \"problem-uuid-here\",\n  \"userAnswer\": \"A\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/contests/:id/submit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contests",
+								":id",
+								"submit"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Final Submit Contest",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/contests/:id/finalsubmit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contests",
+								":id",
+								"finalsubmit"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Contest Live Leaderboard",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/contests/:id/leaderboard",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contests",
+								":id",
+								"leaderboard"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Contest Result",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/contests/:id/results/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contests",
+								":id",
+								"results",
+								"me"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Contest Results",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/contests/:id/results?page=0&size=50",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"contests",
+								":id",
+								"results"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "50"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Management",
+			"item": [
+				{
+					"name": "Create Contest (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"JEE Main Practice Mock 1\",\n  \"startTime\": \"2026-06-15T18:00:00Z\",\n  \"durationMinutes\": 180,\n  \"description\": \"Full syllabus Mock Contest\",\n  \"rules\": \"No calculator, standard marking applies.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/contests",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"contests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Publish Contest (Admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/contests/:id/publish",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"contests",
+								":id",
+								"publish"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Problem to Contest (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"problemId\": \"problem-uuid-here\",\n  \"position\": 1,\n  \"marks\": 4.0,\n  \"negativeMarks\": 1.0\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/contests/:id/problems",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"contests",
+								":id",
+								"problems"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Force End Contest (Admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/contests/:id/end",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"contests",
+								":id",
+								"end"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "contest-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Problem (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Quantum Mechanics - Photoelectric Effect\",\n  \"content\": \"What is the work function of a metal if...\",\n  \"subjectId\": 1,\n  \"topicId\": 12,\n  \"difficulty\": \"HARD\",\n  \"questionType\": \"SINGLE_CORRECT\",\n  \"options\": {\n    \"A\": \"2.3 eV\",\n    \"B\": \"4.2 eV\",\n    \"C\": \"1.8 eV\",\n    \"D\": \"3.1 eV\"\n  },\n  \"answerKey\": \"A\",\n  \"solutionText\": \"Explanation using Einstein's photoelectric equation...\",\n  \"hints\": [\n    \"Recall work function formula: E = h*nu - W\",\n    \"Convert electron-volts to Joules if needed\"\n  ],\n  \"isPyq\": true,\n  \"examId\": \"JEE_ADVANCED\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/problems",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"problems"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Problem (Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Problem Title\",\n  \"difficulty\": \"MEDIUM\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/problems/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"problems",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "problem-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Problem (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/problems/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"problems",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "problem-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Problem Set (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Advanced Mechanics Set\",\n  \"description\": \"Curated problems on Newtonian mechanics and rotational motion.\",\n  \"isPremium\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/problem-sets",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"problem-sets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Problem to Set (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"problemId\": \"problem-uuid-here\",\n  \"position\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/problem-sets/:id/problems",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"problem-sets",
+								":id",
+								"problems"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "problem-set-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recalculate User Stats (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/admin/profile/:userId/recalculate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"profile",
+								":userId",
+								"recalculate"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "user-uuid-here"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refreshToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
